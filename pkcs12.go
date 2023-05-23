@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/sha256"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
@@ -100,6 +102,26 @@ func Pkcs12Gen() error {
 	}
 
 	fmt.Printf("the certificate has been generated: \n\tpfx: %s\n\tpem: %s\n", priPath, pubPath)
+	fingerprint, err := getFingerprint(*cert)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("Fingerprint: %s\n", fingerprint)
 
 	return nil
+}
+
+func getFingerprint(certificate x509.Certificate) (string, error) {
+	// generate fingerprint with sha256
+	// can also use md5, sha1, etc.
+	fingerprint := sha256.Sum256(certificate.Raw)
+
+	var buf bytes.Buffer
+	for _, f := range fingerprint {
+		_, err := fmt.Fprintf(&buf, "%02x", f)
+		if err != nil {
+			return "", err
+		}
+	}
+	return buf.String(), nil
 }
