@@ -34,7 +34,7 @@ func Pkcs12Gen() error {
 	priPath := path.Join(baseDir, "priv.pfx")
 	pubPath := path.Join(baseDir, "pub.pem")
 
-	keyBytes, err := rsa.GenerateKey(rand.Reader, 1024)
+	keyBytes, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
 		return err
 	}
