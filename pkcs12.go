@@ -53,7 +53,7 @@ func Pkcs12Gen() error {
 			Province:           []string{"province"},
 			CommonName:         "name",
 		},
-		// #4 the certificate should has start/end life
+		// #4 the certificate should have start/end life
 		NotBefore: time.Now(),
 		NotAfter:  time.Now().AddDate(1, 0, 0),
 	}
